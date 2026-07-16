@@ -1,14 +1,18 @@
 class Solution {
 public:
     bool searchMatrix(vector<vector<int>>& matrix, int target) {
-        int m = matrix.size(), i = 0 , n= matrix[i].size() , j = n-1;
+        int n = matrix.size(), m = matrix[0].size();
+        int low = 0 , high = n*m -1;
 
-        while(i < m && j >=0){
-            if(matrix[i][j] == target) return true;
-            else if (matrix[i][j] < target) i++;
-            else j--;
+        while(low <= high){
+            int guess = (low + high)/2;
+            int row = guess / m;
+            int col = guess % m;
+
+            if(matrix[row][col] == target) return true;
+            else if(matrix[row][col] < target) low = guess + 1;
+            else high =  guess -1;
         }
-
         return false;
         
         
