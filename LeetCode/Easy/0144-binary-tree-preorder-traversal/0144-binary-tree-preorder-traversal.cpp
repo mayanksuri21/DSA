@@ -11,19 +11,19 @@
  */
 class Solution {
 public:
+    void func(TreeNode* root , vector<int>&res){
+        if(root == nullptr) return;
+
+        res.push_back(root->val);
+        func(root->left,res);
+        func(root->right , res);
+        return;
+    }
     vector<int> preorderTraversal(TreeNode* root) {
-         if(root == nullptr) return {};
-
-        vector<int> ans;
-        ans.push_back(root->val);
-
-        vector<int> left = preorderTraversal(root->left);
-        vector<int> right = preorderTraversal(root->right);
-
-        ans.insert(ans.end(), left.begin(), left.end());
-        ans.insert(ans.end(), right.begin(), right.end());
-
-        return ans;
+       vector<int> res;
+       func(root , res);
+       return res;
         
     }
+    
 };
