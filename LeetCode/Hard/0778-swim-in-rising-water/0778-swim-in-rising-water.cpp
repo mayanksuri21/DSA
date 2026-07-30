@@ -5,60 +5,46 @@ public:
         return true;
     }
 
-    bool bfs(vector<vector<int>>& grid , int n , int m , int money){
-        int i , j;
-        int x[4] = {-1,1,0,0};
-        int y[4] = {0,0,-1,1};
-        queue<pair<int,int>>q;
-        vector<vector<int>>vis(n);
-        for(int i = 0 ; i < n;i++){
-            vector<int> t(m,0);
-            vis[i] = t;
-        }
-        q.push({0,0});
-        vis[0][0] = 1;
-        while(!q.empty()){
-            pair<int,int>p = q.front();
-            q.pop();
-            int row  = p.first , col = p.second;
-            if(row == n-1 && col == m-1) return true;
-            for(int k = 0 ; k<4;k++){
-                int r = row + x[k];
-                int c = col + y[k];
-                if(valid(r,c,n,m) && vis[r][c] == 0 && money >= grid[r][c]){
-                    q.push({r,c});
-                    vis[r][c] = 1;
-                }
-            }
-        
-        }
-        return false;
-    }
+    
     int swimInWater(vector<vector<int>>& grid) {
         int n = grid.size();
         int m = grid[0].size();
-        int low = grid[0][0];
-        int high = grid[0][0];
+        vector<vector<int>> res(n);
+        for(int i = 0 ;i<n;i++){
+            vector<int> t(m,INT_MAX);
+            res[i] = t;
 
-        for(int i = 0 ; i < n ;i++){
-            for(int j = 0 ; j < m ;j++){
-                high = max(high , grid[i][j]);
+        }
+        priority_queue<pair<int,pair<int,int>>,vector<pair<int,pair<int,int>>>,greater<pair<int,pair<int,int>>>> pq;
+        int x[4] = {-1,1,0,0};
+        int y[4] = {0,0,-1,1};
+        res[0][0] = grid[0][0];
+        pq.push({grid[0][0],{0,0}});
+
+        while(!pq.empty()){
+            pair<int,pair<int,int>> p = pq.top();
+            pq.pop();
+            int money = p.first;
+            int row = p.second.first;
+            int col = p.second.second;
+
+            if(money > res[row][col]) continue;
+            for(int k = 0 ; k < 4; k++){
+                int r = row + x[k];
+                int c = col + y[k];
+
+                if(!valid(r,c,n,m)) continue;
+                int newmoney = max(money , grid[r][c]);
+                if(newmoney < res[r][c]){
+
+                    res[r][c] = newmoney;
+                    pq.push({newmoney , {r,c}});
+                }
             }
         }
-        int res = 0;
 
-        while(low <= high){
-            int guess = (low + high) /2;
-            if(bfs(grid , n , m , guess)){
-                res = guess;
-                high = guess - 1;
-            }
-            else{
-                low = guess + 1;
-            }
-        }
-        return res;
-
+        return res[n-1][m-1];
+        
 
         
     }
