@@ -1,33 +1,31 @@
 class Solution {
 public:
-    vector<vector<int>> dp;
-
-    int func(vector<int>& a, int n, int i, int k) {
-        if (i == n )
-            return 0;
-
-        if (dp[i][k] != -1)
-            return dp[i][k];
-
-        if (k == 2) { // Buy state
-            int buy = func(a, n, i + 1, k - 1) - a[i];
-            int skip = func(a, n, i + 1, k);
-
-            return dp[i][k] = max(buy, skip);
-        }
-        else { // Sell state
-            int sell = func(a, n, i + 1, 2) + a[i];
-            int skip = func(a, n, i + 1, k);
-
-            return dp[i][k] = max(sell, skip);
-        }
-    }
+  
     int maxProfit(vector<int>& prices) {
         int n = prices.size();
+        int k = 2;
+        vector<vector<int>>dp(n+1 , vector<int>(k+1 , -1));
+        for(int i = 0 ; i <= n;i++){
+            dp[i][0] = 0;
+        }
+        for (int j = 0; j <= 2; j++) {
+            dp[n][j] = 0;
+        }       
 
-        dp.assign(n+1, vector<int>(3, -1));
-
-        return func(prices, n, 0, 2);
+        for(int i = n-1 ; i >= 0 ; i--){
+            //buy k = 2
+                dp[i][2] = max(dp[i+1][1] - prices[i] , dp[i+1][2]);
         
+            // k ==1 sell
+                dp[i][1] = max(dp[i+1][2] + prices[i] , dp[i+1][1]);
+
+            
+        }
+       
+
+        
+        return dp[0][2];
     }
+        
+    
 };
