@@ -4,7 +4,8 @@ public:
         long long hrs = 0;
 
         for (int i = 0; i < n; i++) {
-            hrs += (piles[i] + speed - 1) / speed;
+            hrs = hrs + piles[i] / speed;
+            if(piles[i]% speed != 0) hrs++;
         }
 
         return hrs;
