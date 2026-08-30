@@ -10,7 +10,7 @@ public:
     }
 
     int findKthNumber(int m, int n, int k) {
-        int low = 1, high = m * n, res = -1;
+        int low = 1, high = m * n;
         while (low <= high) {
             int mid = (low + high) / 2;
             int c = count(m, n, mid);
@@ -18,13 +18,13 @@ public:
                 low = mid + 1;
 
             } else {
-                res = mid;
+                
                 high = mid - 1;
             }
 
      
        }
-        return res;
+        return low;
     }
     
 };
