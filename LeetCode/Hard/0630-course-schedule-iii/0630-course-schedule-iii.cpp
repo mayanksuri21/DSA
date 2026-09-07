@@ -1,13 +1,5 @@
 class Solution {
 public:
-    struct cmp {
-        bool operator()(pair<int,int> &a , pair<int , int> &b){
-            if(a.first != b.first){
-                return a.first > b.first;
-            }
-            return a.second < b.second;
-        }
-    };
     int scheduleCourse(vector<vector<int>>& courses) {
                 
         sort(courses.begin(),courses.end(),[](vector<int>&a , vector<int>&b){
